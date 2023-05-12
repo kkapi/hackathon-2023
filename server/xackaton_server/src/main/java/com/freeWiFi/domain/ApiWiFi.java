@@ -1,5 +1,11 @@
 package com.freeWiFi.domain;
 
+/**
+ * @author nair irgalin
+ * Класс необходимый для получения данные с api.peterburg
+ * содержит указатели на следующий и предыдущий url с точками, их количество
+ * и массив с самими точками
+ */
 public class ApiWiFi {
     private int count;
     private String next;

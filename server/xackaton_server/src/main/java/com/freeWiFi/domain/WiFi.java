@@ -4,6 +4,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Transient;
 
+/**
+ * @author nair irgalin
+ * Класс является отображением wifi сети
+ * и содержит данные о ее местоположении, текущем состоянии и радиусе работы
+ */
 @Entity
 public class WiFi{
     @Id
@@ -21,12 +26,18 @@ public class WiFi{
     private double lat;
     private double lon;
 
+    /**
+     * данный метод преобразует данные из 2 переменных double в массив типа double[2]
+     */
     public void inArray(){
         this.coordinates = new double[2];
         coordinates[0] = lat;
         coordinates[1] = lon;
     }
 
+    /**
+     * данный метод преобразует из массива типа double[2] в 2 переменные типа double
+     */
     public void outArray(){
         lat = coordinates[0];
         lon = coordinates[1];
