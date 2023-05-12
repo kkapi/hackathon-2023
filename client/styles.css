@@ -17,3 +17,8 @@ html {
 [class*="copyrights-pane"] {
     display: none !important;
 }
+
+.info {
+    width: 700px;
+    border: 1px solid red;
+}
