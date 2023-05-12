@@ -14,7 +14,7 @@
 </head>
 
 <body>
-    <div class="d-flex flex-column justify-content-between" style="height: 100vh">
+    <div class="d-flex flex-column justify-content-between" style="min-height: 100vh">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
             <a class="navbar-brand" href="./index.html">Free Wi-Fi SPb</a>
@@ -24,14 +24,27 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
-                    <a class="nav-link active" aria-current="page" href="#">Home</a>
-                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Widget</a>
+                    <a class="nav-link active ms-4" aria-current="page" href="#">Home</a>
+                    <a class="nav-link disabled ms-4" href="#" tabindex="-1" aria-disabled="true">Widget</a>
                 </div>
             </div>
         </div>
     </nav>    
-        <div class="container">
+        <div class="container d-flex justify-content-between" style="border: 1px solid red;">
             <div id="map" class="map"></div>
+            <div class="info">
+                <h1 class="text-center">Бесплатный Wi-Fi СПб</h1>
+                <p>&emsp;&emsp;Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sapiente nisi possimus architecto similique cupiditate! Facilis fugit voluptates autem tempora dolorem? Veniam laboriosam dignissimos rem explicabo quisquam sit ducimus aliquid! Consectetur?</p>
+                <div>
+                    <form id="coordinates-form">
+                        <input type="text" id="latitude-input" placeholder="Введите широту">
+                        <input type="text" id="longitude-input" placeholder="Введите долготу">
+                        <input type="text" id="raius-input" placeholder="Введите радиус">
+                        <button type="submit" class="btn btn-primary mt-3" id="submit-btn">Найти ближайшие точки</button>
+                    </form>
+                </div>
+            </div>
+            
         </div>        
         <div class="text-center p-3 text-white" style="background-color: #212529;">
             © 2023 ETU hackaton:

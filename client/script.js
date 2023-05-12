@@ -18,6 +18,7 @@ function init () {
         // iconImageHref: 'https://cdn-icons-png.flaticon.com/512/7902/7902219.png',
         // iconImageHref: 'https://cdn-icons-png.flaticon.com/512/63/63845.png',
         // iconImageHref: 'https://cdn-icons-png.flaticon.com/512/3178/3178257.png',
+        // iconImageHref: 'https://cdn-icons-png.flaticon.com/512/447/447031.png',
         iconImageSize: [30, 30],
         iconImageOffset: [-15, -15]
     })
@@ -32,4 +33,21 @@ function init () {
     // map.behaviors.disable(['scrollZoom']); // отключаем скролл карты (опционально)
 
     map.geoObjects.add(placemark);
+}
+
+const coordinatesForm = document.querySelector('#coordinates-form');
+const latitudeInput = document.querySelector('#latitude-input');
+const longitudeInput = document.querySelector('#longitude-input');
+const raiusInput = document.querySelector('#raius-input');
+
+coordinatesForm.addEventListener('submit', formHandler);
+
+function formHandler(event) {
+    event.preventDefault();
+
+    const latitudeValue = latitudeInput.value;
+    const longitudeValue = longitudeInput.value;
+    const raiusValue = raiusInput.value;
+
+    console.log(latitudeValue, longitudeValue, raiusValue)
 }
