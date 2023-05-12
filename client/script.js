@@ -1,36 +1,15 @@
-const SERVER_HOST = 'http://26.162.53.239:8080'
-
 ymaps.ready(init);
 
-function init () {
-    // Создание экземпляра карты и его привязка к контейнеру с
-    // заданным id ("map").
+function init() {
+    // Создание экземпляра карты и его привязка к контейнеру с заданным id ("map").
     let map = new ymaps.Map('map', {
         // При инициализации карты обязательно нужно указать
         // её центр и коэффициент масштабирования.
-        center: [59.94892727754434,30.318982137709053], // Спб
+        center: SPB_CENTER, // Спб
         zoom: 12
-    }, {
-        searchControlProvider: 'yandex#search'
-    });
+    }, {});
 
-    let placemark = new ymaps.Placemark([59.94892727754434,30.318982137709053], {}, {
-        iconLayout: 'default#image',
-        iconImageHref: 'https://cdn-icons-png.flaticon.com/512/3178/3178117.png',
-        iconImageSize: [30, 30],
-        iconImageOffset: [-15, -15]
-    })
-
-    map.controls.remove('geolocationControl'); // удаляем геолокацию
-    map.controls.remove('searchControl'); // удаляем поиск
-    map.controls.remove('trafficControl'); // удаляем контроль трафика
-    map.controls.remove('typeSelector'); // удаляем тип
-    map.controls.remove('fullscreenControl'); // удаляем кнопку перехода в полноэкранный режим
-    map.controls.remove('zoomControl'); // удаляем контрол зуммирования
-    map.controls.remove('rulerControl'); // удаляем контрол правил
-    // map.behaviors.disable(['scrollZoom']); // отключаем скролл карты (опционально)
-
-    map.geoObjects.add(placemark);
+    removeControls(map);
 }
 
 const coordinatesForm = document.querySelector('#coordinates-form');
@@ -63,9 +42,9 @@ async function getPoints() {
             Authorization: JWT,
         }
     })
-      .then(response => response.json())
-      .then(json => test = json)
-    
+        .then(response => response.json())
+        .then(json => test = json)
+
     test = test.results;
 
     let list = document.createElement('ul');
@@ -79,7 +58,7 @@ async function getPoints() {
     for (let key in test) {
         let li = document.createElement('li');
         li.innerText = `№: ${test[key].number}\n Широта: ${test[key].coordinates[0]}\n Долгота: ${test[key].coordinates[1]}`
-        list.append(li)     
+        list.append(li)
     }
 
     div.append(list)
@@ -92,12 +71,14 @@ async function getNair() {
     const raiusValue = Number(raiusInput.value);
 
     let test;
-    await fetch(`${SERVER_HOST}?lon=${longitudeValue}&lat=${latitudeValue}&radius=${raiusValue}`, {
+    await fetch(`${SERVER_HOST}/getWiFi?lon=${longitudeValue}&lat=${latitudeValue}&radius=${raiusValue}`, {
 
     })
-      .then(response => response.json())
-      .then(json => test = json)
-    
+        .then(response => response.json())
+        .then(json => test = json)
+
+    console.log(test)
+
     let list = document.createElement('ul');
 
     let div = document.querySelector('#points')
@@ -109,9 +90,65 @@ async function getNair() {
     for (let key in test) {
         let li = document.createElement('li');
         li.innerText = `№: ${test[key].number}\n Широта: ${test[key].coordinates[0]}\n Долгота: ${test[key].coordinates[1]}`
-        list.append(li)     
+        list.append(li)
     }
 
     div.append(list)
 
+    addPlacemarks([latitudeValue, longitudeValue], test)
+
+}
+
+function removeControls(map) {
+    map.controls.remove('geolocationControl'); // удаляем геолокацию
+    map.controls.remove('searchControl'); // удаляем поиск
+    map.controls.remove('trafficControl'); // удаляем контроль трафика
+    map.controls.remove('typeSelector'); // удаляем тип
+    map.controls.remove('fullscreenControl'); // удаляем кнопку перехода в полноэкранный режим
+    map.controls.remove('zoomControl'); // удаляем контрол зуммирования
+    map.controls.remove('rulerControl'); // удаляем контрол правил
+    // map.behaviors.disable(['scrollZoom']); // отключаем скролл карты (опционально)
+}
+
+
+function addPlacemarks(center, points) {
+
+    let mapDiv = document.querySelector('#map');
+    mapDiv.innerHTML = '';
+
+    let map = new ymaps.Map('map', {
+        center: center,
+        zoom: 16
+    });
+
+    let centerPlacemark = new ymaps.Placemark(center, {
+        balloonContentHeader: 'Вы находитесь здесь.'
+    }, {
+        iconLayout: 'default#image',
+        iconImageHref: 'https://cdn-icons-png.flaticon.com/512/762/762041.png',
+        iconImageSize: [30, 30],
+        iconImageOffset: [-15, -15]
+    });
+
+    map.geoObjects.add(centerPlacemark);
+
+    for (let point in points) {
+        console.log(points[point].coordinates)
+        let placemark = new ymaps.Placemark(points[point].coordinates, {
+            balloonContentHeader: `${points[point].name_wifi}`,
+            balloonContentBody: `Адрес:${points[point].name_wifi}, 
+                                Район:${points[point].district}, 
+                                Покрытие:${points[point].coverage}м, 
+                                Статус:${points[point].status}`            
+        }, {
+            iconLayout: 'default#image',
+            iconImageHref: 'https://cdn-icons-png.flaticon.com/512/3898/3898607.png',
+            iconImageSize: [30, 30],
+            iconImageOffset: [-15, -15]
+        });
+
+        map.geoObjects.add(placemark);
+    }
+
+    removeControls(map);
 }
