@@ -1,12 +1,9 @@
 ymaps.ready(init);
 
 function init() {
-    // Создание экземпляра карты и его привязка к контейнеру с заданным id ("map").
     let map = new ymaps.Map('map', {
-        // При инициализации карты обязательно нужно указать
-        // её центр и коэффициент масштабирования.
-        center: SPB_CENTER, // Спб
-        zoom: 12
+        center: SPB_CENTER, // SPB_CENTER
+        zoom: 12,
     }, {});
 
     removeControls(map);
@@ -15,7 +12,7 @@ function init() {
 const coordinatesForm = document.querySelector('#coordinates-form');
 const latitudeInput = document.querySelector('#latitude-input');
 const longitudeInput = document.querySelector('#longitude-input');
-const raiusInput = document.querySelector('#raius-input');
+const radiusInput = document.querySelector('#raius-input');
 
 coordinatesForm.addEventListener('submit', formHandler);
 
@@ -23,62 +20,44 @@ function formHandler(event) {
     event.preventDefault();
 
     if (radio.checked) {
-        getNair()        
+        getAreaPoint();      
     } else {
-        console.log('Вывод ближайшей точки')
+        getClosestPoint();
     }
 }
 
-async function getPoints() {
-    console.log('points')
-
-    let JWT = 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJhU1RaZm42bHpTdURYcUttRkg1SzN5UDFhT0FxUkhTNm9OendMUExaTXhFIn0.eyJleHAiOjE3Nzg0OTc3OTUsImlhdCI6MTY4MzgwMzM5NSwianRpIjoiNjE2MWY2MzEtZTAyMS00OGRmLWJlYmItMzMwNmQ5NGE1NzcwIiwiaXNzIjoiaHR0cHM6Ly9rYy5wZXRlcnNidXJnLnJ1L3JlYWxtcy9lZ3MtYXBpIiwiYXVkIjoiYWNjb3VudCIsInN1YiI6IjZjNDY2ZWI1LTQ4YzUtNDI5ZC04N2U2LWUxYmIzYTE2MWNiZiIsInR5cCI6IkJlYXJlciIsImF6cCI6ImFkbWluLXJlc3QtY2xpZW50Iiwic2Vzc2lvbl9zdGF0ZSI6Ijk3OTcxYmQ0LTRiNjgtNDM2Yi1hZjdhLTUwZjFhMDRhOWVlNCIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiLyoiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbImRlZmF1bHQtcm9sZXMtZWdzLWFwaSIsIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6ImVtYWlsIHByb2ZpbGUiLCJzaWQiOiI5Nzk3MWJkNC00YjY4LTQzNmItYWY3YS01MGYxYTA0YTllZTQiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsIm5hbWUiOiLQmtC40YDQuNC70Lsg0JrQvtC_0YvQu9C-0LIiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiI3OGU1Y2RiNjFkMzUxMzQ2YjQ1ZDNlNjM4NjczYmRkMSIsImdpdmVuX25hbWUiOiLQmtC40YDQuNC70LsiLCJmYW1pbHlfbmFtZSI6ItCa0L7Qv9GL0LvQvtCyIn0.a3kcttxnVtSkLV7u_9pF396UsQYxRFd4y1x76Jm6pO7sFwU3T1Vbgq0wnyys4XtsHgL1iYaw6O7Vu1npjbLU7u-QP7qF6WNknSr6uNLIPD7LKsmeDtiK9iRMDc_OyVNkTGQKV46sWKaU3pSrt_SG5n6XiRQQMp0B3SRHcjqnIeWX86F2KbOBkdLIj_eJLmUdtSFEd_sFJnDi1ruXTVn_xtCxRG-noro_UBMpplwQejh-1PlC7CWVEx-MwP6Yquk4s05J6f6tvsVj0ZiBgutybta7UNgBkrETtWzG0gSMFjJh_ylYvCDgPmCnxLm0A65v7TNxgnOUpy-LTLFH2jIbmA'
-
-    let test;
-    await fetch('https://spb-classif.gate.petersburg.ru/api/v2/datasets/195/versions/latest/data/417/', {
-        headers: {
-            Authorization: JWT,
-        }
-    })
-        .then(response => response.json())
-        .then(json => test = json)
-
-    test = test.results;
-
-    let list = document.createElement('ul');
-
-    let div = document.querySelector('#points')
-
-    div.innerHTML = ''
-
-    list.classList.add("mt-5");
-
-    for (let key in test) {
-        let li = document.createElement('li');
-        li.innerText = `№: ${test[key].number}\n Широта: ${test[key].coordinates[0]}\n Долгота: ${test[key].coordinates[1]}`
-        list.append(li)
-    }
-
-    div.append(list)
-}
-
-
-async function getNair() {
-    console.log('GET NAIR');
-
+async function getClosestPoint() {
     const latitudeValue = Number(latitudeInput.value);
     const longitudeValue = Number(longitudeInput.value);
-    const raiusValue = Number(raiusInput.value);
 
-    let test;
-    await fetch(`${SERVER_HOST}/getWiFi?lon=${longitudeValue}&lat=${latitudeValue}&radius=${raiusValue}`, {
+    let closestPoint;
+
+    await fetch(`${SERVER_HOST}/getWiFiNear?lon=${longitudeValue}&lat=${latitudeValue}`, {})
+        .then(response => response.json())
+        .then(json => closestPoint = json)
+
+    addPlacemarks([latitudeValue, longitudeValue], [closestPoint])
+}
+
+async function getAreaPoint() {
+    const latitudeValue = Number(latitudeInput.value);
+    const longitudeValue = Number(longitudeInput.value);
+    const radiusValue = Number(radiusInput.value);
+
+    let points;
+
+    await fetch(`${SERVER_HOST}/getWiFi?lon=${longitudeValue}&lat=${latitudeValue}&radius=${radiusValue}`, {
 
     })
         .then(response => response.json())
-        .then(json => test = json)
+        .then(json => points = json)
 
-    console.log(test)
+    // appendPoints(points)
+    
+    addPlacemarks([latitudeValue, longitudeValue], points)
+}
 
+function appendPoints (points) {
     let list = document.createElement('ul');
 
     let div = document.querySelector('#points')
@@ -87,16 +66,13 @@ async function getNair() {
 
     list.classList.add("mt-5");
 
-    for (let key in test) {
+    for (let key in points) {
         let li = document.createElement('li');
-        li.innerText = `№: ${test[key].number}\n Широта: ${test[key].coordinates[0]}\n Долгота: ${test[key].coordinates[1]}`
+        li.innerText = `№: ${points[key].number}\n Широта: ${points[key].coordinates[0]}\n Долгота: ${points[key].coordinates[1]}`
         list.append(li)
     }
 
     div.append(list)
-
-    addPlacemarks([latitudeValue, longitudeValue], test)
-
 }
 
 function removeControls(map) {
@@ -110,9 +86,7 @@ function removeControls(map) {
     // map.behaviors.disable(['scrollZoom']); // отключаем скролл карты (опционально)
 }
 
-
 function addPlacemarks(center, points) {
-
     let mapDiv = document.querySelector('#map');
     mapDiv.innerHTML = '';
 
@@ -132,14 +106,19 @@ function addPlacemarks(center, points) {
 
     map.geoObjects.add(centerPlacemark);
 
-    for (let point in points) {
-        console.log(points[point].coordinates)
+    for (let point in points) {        
         let placemark = new ymaps.Placemark(points[point].coordinates, {
             balloonContentHeader: `${points[point].name_wifi}`,
-            balloonContentBody: `Адрес:${points[point].name_wifi}, 
+            balloonContentBody: `Адресc:${points[point].address}, 
                                 Район:${points[point].district}, 
                                 Покрытие:${points[point].coverage}м, 
-                                Статус:${points[point].status}`            
+                                Статус:${points[point].status}`,
+            balloonContentFooter: `<button onclick="test(${points[point].coordinates[0]},
+                                                         ${points[point].coordinates[1]},
+                                                         ${center[0]},
+                                                         ${center[1]})">
+                                        Кнопка
+                                    </button>`        
         }, {
             iconLayout: 'default#image',
             iconImageHref: 'https://cdn-icons-png.flaticon.com/512/3898/3898607.png',
@@ -153,18 +132,21 @@ function addPlacemarks(center, points) {
     removeControls(map);
 }
 
+function test(a,b,c,d) {
+    console.log(a,b,c,d)
+}
+
 const radio = document.querySelector('#radio')
-console.log(radio)
 const submitButton = document.querySelector('#submit-btn')
 
 radio.addEventListener('change', function() {
     if (this.checked) {      
-      raiusInput.disabled = false;
-      raiusInput.value = '';
+      radiusInput.disabled = false;
+      radiusInput.value = '';
       submitButton.innerText = 'Найти все Wi-Fi точки в радиусе';
     } else {
-      raiusInput.disabled = true;
-      raiusInput.value = '';
+      radiusInput.disabled = true;
+      radiusInput.value = '';
       submitButton.innerText = 'Найти ближашую Wi-Fi точку';
     }
   });

@@ -14,7 +14,7 @@
 </head>
 
 <body>
-    <div class="d-flex flex-column justify-content-between" style="min-height: 100vh">
+    <div class="d-flex flex-column justify-content-start" style="min-height: 100vh;">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container">
                 <a class="navbar-brand" href="./index.html">Free Wi-Fi SPb</a>
@@ -25,12 +25,15 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                     <div class="navbar-nav">
-                        <a class="nav-link active ms-4" aria-current="page" href="https://about.petersburg.ru/" target="_blank">Цифровой
+                        <a class="nav-link active ms-4" aria-current="page" href="https://about.petersburg.ru/"
+                            target="_blank">Цифровой
                             Петербург</a>
                         <a class="nav-link active ms-4" aria-current="page"
-                            href="https://petersburg.ru/mainPortal#/api_services/view/2212" target="_blank">Бесплатный Wi-Fi API</a>
+                            href="https://petersburg.ru/mainPortal#/api_services/view/2212" target="_blank">Бесплатный
+                            Wi-Fi API</a>
                         <a class="nav-link active ms-4" aria-current="page"
-                            href="https://petersburg.ru/mainPortal#/api_services/view/2223" target="_blank">Геокодер API</a>
+                            href="https://petersburg.ru/mainPortal#/api_services/view/2223" target="_blank">Геокодер
+                            API</a>
                         <a class="nav-link disabled ms-4" href="#" tabindex="-1" aria-disabled="true">Widget</a>
                     </div>
                 </div>
@@ -38,22 +41,21 @@
         </nav>
         <div class="contentik">
             <div class="container d-flex justify-content-between">
-
                 <div id="map" class="map"></div>
                 <div class="info">
-                    <h1 class="text-center">Бесплатный Wi-Fi СПб</h1>
+                    <h1 class="text-center mt-5">Бесплатный Wi-Fi СПб</h1>
                     <p>&emsp;&emsp;Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sapiente nisi possimus
                         architecto similique cupiditate! Facilis fugit voluptates autem tempora dolorem? Veniam
                         laboriosam dignissimos rem explicabo quisquam sit ducimus aliquid! Consectetur?
-                    </p>                    
+                    </p>
                     <div>
-                        <form id="coordinates-form">                            
+                        <form id="coordinates-form">
                             <div class="row g-3 align-items-center">
                                 <div class="col-auto">
                                     <label class="col-form-label">Широта:</label>
                                 </div>
                                 <div class="col-auto">
-                                    <input type="text" id="latitude-input" class="form-control">
+                                    <input type="number" step="any" id="latitude-input" class="form-control">
                                 </div>
                                 <div class="col-auto">
                                     <span class="form-text">
@@ -66,7 +68,7 @@
                                     <label class="col-form-label">Долгота:</label>
                                 </div>
                                 <div class="col-auto">
-                                    <input type="text" id="longitude-input" class="form-control">
+                                    <input type="number" step="any" id="longitude-input" class="form-control">
                                 </div>
                                 <div class="col-auto">
                                     <span class="form-text">
@@ -74,20 +76,20 @@
                                     </span>
                                 </div>
                             </div>
-                            
+
                             <div class="row g-3 align-items-center">
                                 <div class="form-check ms-2">
                                     <input class="form-check-input" type="checkbox" id="radio">
                                     <label class="form-check-label">
-                                      Найти все точки в определенном радиусе
-                                    </label>                                       
-                                  </div>
+                                        Найти все точки в определенном радиусе
+                                    </label>
+                                </div>
                                 <div class="col-auto">
                                     <label class="col-form-label">Радиус:</label>
                                 </div>
                                 <div class="col-auto ms-2">
-                                    <input type="text" id="raius-input" class="form-control" disabled="true">
-                                </div>                                
+                                    <input type="number" step="any" id="raius-input" class="form-control" disabled="true">
+                                </div>
                                 <div class="col-auto">
                                     <span class="form-text">
                                         Введите радиус поиска в метрах.
@@ -98,17 +100,16 @@
                                 <button type="submit" class="btn btn-primary mt-4" id="submit-btn">
                                     Найти ближайшую Wi-Fi точку
                                 </button>
-                            </div>                                                        
+                            </div>
                         </form>
                     </div>
                     <div id="points">
 
                     </div>
                 </div>
-
             </div>
         </div>
-        <div class="text-center p-3 text-white" style="background-color: #212529;">
+        <div class="text-center p-3 text-white footer" style="background-color: #212529;">
             © 2023 ETU hackaton:
             <a class="text-white" href="https://github.com/kkapi/hackaton" target="_blank">Free Wi-Fi SPb</a>
         </div>

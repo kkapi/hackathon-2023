@@ -23,9 +23,13 @@ html {
 }
 
 .contentik {
-    margin-top: 1px
+    margin-top: 55px;
 }
 
 #coordinates-form .row {
     margin-top: 2px;
+}
+
+.footer {
+    margin-top: auto;
 }
