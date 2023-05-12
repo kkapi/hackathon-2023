@@ -15,37 +15,58 @@
 
 <body>
     <div class="d-flex flex-column justify-content-between" style="min-height: 100vh">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-            <a class="navbar-brand" href="./index.html">Free Wi-Fi SPb</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
-                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                <div class="navbar-nav">
-                    <a class="nav-link active ms-4" aria-current="page" href="#">Home</a>
-                    <a class="nav-link disabled ms-4" href="#" tabindex="-1" aria-disabled="true">Widget</a>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container">
+                <a class="navbar-brand" href="./index.html">Free Wi-Fi SPb</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                    <div class="navbar-nav">
+                        <a class="nav-link active ms-4" aria-current="page" href="https://about.petersburg.ru/">Цифровой
+                            Петербург</a>
+                        <a class="nav-link active ms-4" aria-current="page"
+                            href="https://petersburg.ru/mainPortal#/api_services/view/2212">Бесплатный Wi-Fi API</a>
+                        <a class="nav-link active ms-4" aria-current="page"
+                            href="https://petersburg.ru/mainPortal#/api_services/view/2223">Геокодер API</a>
+                        <a class="nav-link disabled ms-4" href="#" tabindex="-1" aria-disabled="true">Widget</a>
+                    </div>
                 </div>
+            </div>
+        </nav>
+        <div class="contentik">
+            <div class="container d-flex justify-content-between" style="border: 1px solid red;">
+
+                <div id="map" class="map"></div>
+                <div class="info">
+                    <h1 class="text-center">Бесплатный Wi-Fi СПб</h1>
+                    <p>&emsp;&emsp;Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sapiente nisi possimus
+                        architecto similique cupiditate! Facilis fugit voluptates autem tempora dolorem? Veniam
+                        laboriosam dignissimos rem explicabo quisquam sit ducimus aliquid! Consectetur?</p>
+                    
+                    <div>
+                        <form id="coordinates-form">
+                            <input type="text" id="latitude-input" placeholder="Введите широту">
+                            <input type="text" id="longitude-input" placeholder="Введите долготу">
+                            <input type="text" id="raius-input" placeholder="Введите радиус">
+                            <button type="submit" class="btn btn-primary mt-3" id="submit-btn">Найти ближайшие
+                                точки</button>
+                        </form>
+                    </div>
+                    <div id="points">
+                        <button class="btn btn-primary mt-3" onclick="getPoints()">
+                            Вывести точки
+                        </button>
+                        <button class="btn btn-primary mt-3" onclick="getNair()">
+                            Точки Наир
+                        </button>
+                    </div>
+                </div>
+
             </div>
         </div>
-    </nav>    
-        <div class="container d-flex justify-content-between" style="border: 1px solid red;">
-            <div id="map" class="map"></div>
-            <div class="info">
-                <h1 class="text-center">Бесплатный Wi-Fi СПб</h1>
-                <p>&emsp;&emsp;Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sapiente nisi possimus architecto similique cupiditate! Facilis fugit voluptates autem tempora dolorem? Veniam laboriosam dignissimos rem explicabo quisquam sit ducimus aliquid! Consectetur?</p>
-                <div>
-                    <form id="coordinates-form">
-                        <input type="text" id="latitude-input" placeholder="Введите широту">
-                        <input type="text" id="longitude-input" placeholder="Введите долготу">
-                        <input type="text" id="raius-input" placeholder="Введите радиус">
-                        <button type="submit" class="btn btn-primary mt-3" id="submit-btn">Найти ближайшие точки</button>
-                    </form>
-                </div>
-            </div>
-            
-        </div>        
         <div class="text-center p-3 text-white" style="background-color: #212529;">
             © 2023 ETU hackaton:
             <a class="text-white" href="https://github.com/kkapi/hackaton" target="_blank">Free Wi-Fi SPb</a>
