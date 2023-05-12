@@ -20,9 +20,12 @@ html {
 
 .info {
     width: 700px;
-    border: 1px solid red;
 }
 
 .contentik {
     margin-top: 1px
+}
+
+#coordinates-form .row {
+    margin-top: 2px;
 }

@@ -25,43 +25,84 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                     <div class="navbar-nav">
-                        <a class="nav-link active ms-4" aria-current="page" href="https://about.petersburg.ru/">Цифровой
+                        <a class="nav-link active ms-4" aria-current="page" href="https://about.petersburg.ru/" target="_blank">Цифровой
                             Петербург</a>
                         <a class="nav-link active ms-4" aria-current="page"
-                            href="https://petersburg.ru/mainPortal#/api_services/view/2212">Бесплатный Wi-Fi API</a>
+                            href="https://petersburg.ru/mainPortal#/api_services/view/2212" target="_blank">Бесплатный Wi-Fi API</a>
                         <a class="nav-link active ms-4" aria-current="page"
-                            href="https://petersburg.ru/mainPortal#/api_services/view/2223">Геокодер API</a>
+                            href="https://petersburg.ru/mainPortal#/api_services/view/2223" target="_blank">Геокодер API</a>
                         <a class="nav-link disabled ms-4" href="#" tabindex="-1" aria-disabled="true">Widget</a>
                     </div>
                 </div>
             </div>
         </nav>
         <div class="contentik">
-            <div class="container d-flex justify-content-between" style="border: 1px solid red;">
+            <div class="container d-flex justify-content-between">
 
                 <div id="map" class="map"></div>
                 <div class="info">
                     <h1 class="text-center">Бесплатный Wi-Fi СПб</h1>
                     <p>&emsp;&emsp;Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sapiente nisi possimus
                         architecto similique cupiditate! Facilis fugit voluptates autem tempora dolorem? Veniam
-                        laboriosam dignissimos rem explicabo quisquam sit ducimus aliquid! Consectetur?</p>
-                    
+                        laboriosam dignissimos rem explicabo quisquam sit ducimus aliquid! Consectetur?
+                    </p>                    
                     <div>
-                        <form id="coordinates-form">
-                            <input type="text" id="latitude-input" placeholder="Введите широту">
-                            <input type="text" id="longitude-input" placeholder="Введите долготу">
-                            <input type="text" id="raius-input" placeholder="Введите радиус">
-                            <button type="submit" class="btn btn-primary mt-3" id="submit-btn">Найти ближайшие
-                                точки</button>
+                        <form id="coordinates-form">                            
+                            <div class="row g-3 align-items-center">
+                                <div class="col-auto">
+                                    <label class="col-form-label">Широта:</label>
+                                </div>
+                                <div class="col-auto">
+                                    <input type="text" id="latitude-input" class="form-control">
+                                </div>
+                                <div class="col-auto">
+                                    <span class="form-text">
+                                        Введите вашу широту.
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="row g-3 align-items-center">
+                                <div class="col-auto">
+                                    <label class="col-form-label">Долгота:</label>
+                                </div>
+                                <div class="col-auto">
+                                    <input type="text" id="longitude-input" class="form-control">
+                                </div>
+                                <div class="col-auto">
+                                    <span class="form-text">
+                                        Введите вашу долготу.
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <div class="row g-3 align-items-center">
+                                <div class="form-check ms-2">
+                                    <input class="form-check-input" type="checkbox" id="radio">
+                                    <label class="form-check-label">
+                                      Найти все точки в определенном радиусе
+                                    </label>                                       
+                                  </div>
+                                <div class="col-auto">
+                                    <label class="col-form-label">Радиус:</label>
+                                </div>
+                                <div class="col-auto ms-2">
+                                    <input type="text" id="raius-input" class="form-control" disabled="true">
+                                </div>                                
+                                <div class="col-auto">
+                                    <span class="form-text">
+                                        Введите радиус поиска в метрах.
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <button type="submit" class="btn btn-primary mt-4" id="submit-btn">
+                                    Найти ближайшую Wi-Fi точку
+                                </button>
+                            </div>                                                        
                         </form>
                     </div>
                     <div id="points">
-                        <button class="btn btn-primary mt-3" onclick="getPoints()">
-                            Вывести точки
-                        </button>
-                        <button class="btn btn-primary mt-3" onclick="getNair()">
-                            Точки Наир
-                        </button>
+
                     </div>
                 </div>
 
@@ -76,6 +117,8 @@
         integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
         crossorigin="anonymous"></script>
     <script src="./script.js"></script>
+    <script src="./utils/consts.js"></script>
+
 </body>
 
 </html>
