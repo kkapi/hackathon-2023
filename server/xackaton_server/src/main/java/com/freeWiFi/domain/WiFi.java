@@ -1,15 +1,14 @@
 package com.freeWiFi.domain;
 
-import io.hypersistence.utils.hibernate.type.array.StringArrayType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Transient;
-import org.hibernate.annotations.Type;
 
 @Entity
 public class WiFi{
     @Id
     private long number;
+
     private String address;
     private String district;
     private String name_wifi;
@@ -24,22 +23,13 @@ public class WiFi{
 
     public void inArray(){
         this.coordinates = new double[2];
-        coordinates[1] = lat;
-        coordinates[2] = lon;
+        coordinates[0] = lat;
+        coordinates[1] = lon;
     }
 
     public void outArray(){
-        lat = coordinates[1];
-        lon = coordinates[2];
-    }
-
-    public WiFi(long number, String address, String district, String name_wifi, int coverage, String status) {
-        this.number = number;
-        this.address = address;
-        this.district = district;
-        this.name_wifi = name_wifi;
-        this.coverage = coverage;
-        this.status = status;
+        lat = coordinates[0];
+        lon = coordinates[1];
     }
 
     public WiFi() {
