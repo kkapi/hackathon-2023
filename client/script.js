@@ -22,13 +22,11 @@ coordinatesForm.addEventListener('submit', formHandler);
 function formHandler(event) {
     event.preventDefault();
 
-    const latitudeValue = Number(latitudeInput.value);
-    const longitudeValue = Number(longitudeInput.value);
-    const raiusValue = Number(raiusInput.value);
-
-    console.log(latitudeValue, longitudeValue, raiusValue)
-
-    console.log(typeof latitudeValue)
+    if (radio.checked) {
+        getNair()        
+    } else {
+        console.log('Вывод ближайшей точки')
+    }
 }
 
 async function getPoints() {
@@ -66,6 +64,8 @@ async function getPoints() {
 
 
 async function getNair() {
+    console.log('GET NAIR');
+
     const latitudeValue = Number(latitudeInput.value);
     const longitudeValue = Number(longitudeInput.value);
     const raiusValue = Number(raiusInput.value);
@@ -152,3 +152,19 @@ function addPlacemarks(center, points) {
 
     removeControls(map);
 }
+
+const radio = document.querySelector('#radio')
+console.log(radio)
+const submitButton = document.querySelector('#submit-btn')
+
+radio.addEventListener('change', function() {
+    if (this.checked) {      
+      raiusInput.disabled = false;
+      raiusInput.value = '';
+      submitButton.innerText = 'Найти все Wi-Fi точки в радиусе';
+    } else {
+      raiusInput.disabled = true;
+      raiusInput.value = '';
+      submitButton.innerText = 'Найти ближашую Wi-Fi точку';
+    }
+  });
