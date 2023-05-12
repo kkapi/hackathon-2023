@@ -9,9 +9,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 
+/**
+ * @author nair irgalin
+ * данный класс является серсисом для запросов на api.peterburg
+ */
 @Service
 public class FreeWiFiApiService {
 
+    /**
+     * данный метод совершает http get запрос на api.petergurg получая данные о wifi сетях
+     * @param page - страница с данными
+     * @return - объект класса apiWiFi содержащий информацию о 100 wifi сетях, а также ссылку на предыдущую и следующую страницу
+     */
     public ApiWiFi getFreeWiFi(int page){
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
