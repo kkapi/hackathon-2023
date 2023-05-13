@@ -1,6 +1,7 @@
 package com.freeWiFi.controller;
 
 import com.freeWiFi.domain.WiFi;
+import com.freeWiFi.domain.WiFiSending;
 import com.freeWiFi.service.WiFiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -55,7 +56,7 @@ public class WiFiController {
      */
     @CrossOrigin
     @GetMapping("/address/getWiFi")
-    public List<WiFi> getWiFiFromAddress(@RequestParam String address, @RequestParam double radius) throws ServerException {
+    public WiFiSending getWiFiFromAddress(@RequestParam String address, @RequestParam double radius) throws ServerException {
         return wiFiService.getPointInsideCircleFromAddress(address, radius);
     }
 
@@ -67,7 +68,7 @@ public class WiFiController {
      */
     @CrossOrigin
     @GetMapping("/address/getWiFiNear")
-    public WiFi getWiFiNearFromAddress(@RequestParam String address) throws ServerException {
+    public WiFiSending getWiFiNearFromAddress(@RequestParam String address) throws ServerException {
         return wiFiService.getPointNearFromAddress(address);
     }
 

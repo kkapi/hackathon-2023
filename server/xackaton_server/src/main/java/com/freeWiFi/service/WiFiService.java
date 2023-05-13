@@ -2,11 +2,13 @@ package com.freeWiFi.service;
 
 import com.freeWiFi.domain.ApiWiFi;
 import com.freeWiFi.domain.WiFi;
+import com.freeWiFi.domain.WiFiSending;
 import com.freeWiFi.repo.WiFiRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.rmi.ServerException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -46,7 +48,7 @@ public class WiFiService {
      * @param radius - радиус поиска
      * @return список wifi точек в неоходимом радиусе
      */
-    public List<WiFi> getPointInsideCircle(double lon, double lat, double radius){
+    public List<WiFi> getPointInsideCircle(double lon, double lat, double radius) {
         List<WiFi> wiFis= wiFiRepo.findNeedPoint(lon, lat, radius);
         for(WiFi wiFi : wiFis)
         {
@@ -72,32 +74,53 @@ public class WiFiService {
     }
 
     /**
+     * Метод возвращает координаты дома
+     * @param address - адресс дома
+     * @return - координаты дома
+     * @throws ServerException  - исключение возникает при ненахождении адресса геокодером
+     */
+    public double[] getCoordinatesAddress(String address) throws ServerException {
+        double[] coordinates = httpService.ApiGeoCode(address);
+        if((coordinates[0] == 0) && (coordinates[1] == 0)){
+            coordinates = httpService.ApiGeoCodeJustAbout(address);
+            if(coordinates == null) {
+                throw new ServerException("Адресс не найден");
+            }
+        }
+        return coordinates;
+    }
+
+    /**
      * Метод возвращает набор wifi точек в заданном радиусе от указанного адресса
      * @param address - адресс дома
      * @param radius - радиус поиска
-     * @return - список wifi точек
-     * @throws ServerException - исключение возникает при неверном вводе адресса
+     * @return - список wifi точек и координаты адреса
+     * @throws ServerException - исключение возникает при ненахождении адресса геокодером
      */
-    public List<WiFi> getPointInsideCircleFromAddress(String address, double radius) throws ServerException {
-        double[] coordinates = httpService.ApiGeoCode(address);
-        if((coordinates[0] == 0) && (coordinates[1] == 0)){
-            throw new ServerException("Address not found");
-        }
-        return getPointInsideCircle(coordinates[1], coordinates[0], radius);
+    public WiFiSending getPointInsideCircleFromAddress(String address, double radius) throws ServerException {
+        double[] coordinates = getCoordinatesAddress(address);
+        WiFiSending sending = new WiFiSending();
+        List<WiFi> wiFiList = getPointInsideCircle(coordinates[1], coordinates[0], radius);
+        sending.setWiFis(wiFiList);
+        sending.setCoordinates(coordinates);
+        return sending;
     }
 
     /**
      * Метод возвращает ближайшую к дому wifi точку
      * @param address - адресс дома
-     * @return - wifi точка
-     * @throws ServerException - исключение возникает при неверном вводе адресса
+     * @return - wifi точка и координаты адреса
+     * @throws ServerException - исключение возникает при ненахождении адресса геокодером
      */
-    public WiFi getPointNearFromAddress(String address) throws ServerException{
-        double[] coordinates = httpService.ApiGeoCode(address);
-        if((coordinates[0] == 0) && (coordinates[1] == 0)){
-            throw new ServerException("Address not found");
-        }
-        return getPointNear(coordinates[1], coordinates[0]);
+    public WiFiSending getPointNearFromAddress(String address) throws ServerException {
+        double[] coordinates = getCoordinatesAddress(address);
+        WiFiSending sending = new WiFiSending();
+        WiFi wiFi = getPointNear(coordinates[1], coordinates[0]);
+        List<WiFi> wiFiList = new ArrayList<>();
+        wiFiList.add(wiFi);
+        sending.setWiFis(wiFiList);
+        sending.setCoordinates(coordinates);
+        return sending;
     }
 
     /**
