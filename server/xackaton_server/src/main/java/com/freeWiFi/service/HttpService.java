@@ -12,7 +12,7 @@ import org.springframework.web.client.RestTemplate;
 
 /**
  * @author nair irgalin
- * данный класс является серсисом для api запросов
+ * данный класс является сервисом для api запросов
  */
 @Service
 public class HttpService {

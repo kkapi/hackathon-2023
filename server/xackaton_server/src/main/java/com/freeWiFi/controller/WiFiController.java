@@ -23,9 +23,9 @@ public class WiFiController {
     /**
      * Данные метод возвращает набор wifi точек находящихся в
      * определенном радиусе от заданных координат
-     * @param lon - долгота
-     * @param lat - широта
-     * @param radius - радиус
+     * @param lon - долгота, указывается в параметрах запроса
+     * @param lat - широта, указывается в параметрах запроса
+     * @param radius - радиус, указывается в параметрах запроса
      * @return - набор wifi точек
      */
     @CrossOrigin
@@ -36,8 +36,8 @@ public class WiFiController {
 
     /**
      * Данные метод возвращает ближайшую к заданными координатам wifi точку
-     * @param lon - долгота
-     * @param lat - широта
+     * @param lon - долгота, указывается в параметрах запроса
+     * @param lat - широта, указывается в параметрах запроса
      * @return wifi точка
      */
     @CrossOrigin
@@ -48,8 +48,8 @@ public class WiFiController {
 
     /**
      * Данный метод возвращает набор точек находящихся в определенном радиусе от заданного адресса
-     * @param address - адрес дома
-     * @param radius - радиус поиска
+     * @param address - адрес дома, указывается в параметрах запроса
+     * @param radius - радиус поиска, указывается в параметрах запроса
      * @return - набор wifi точек
      * @throws ServerException - возникает в случае ввода неверного адресса
      */
@@ -61,7 +61,7 @@ public class WiFiController {
 
     /**
      * Данный метод возвращает ближайющую wifi точку к дому
-     * @param address - адресс дома
+     * @param address - адресс дома, указывается в параметрах запроса
      * @return - wifi точка
      * @throws ServerException - возникает в случае ввода неверного адресса
      */
@@ -69,5 +69,15 @@ public class WiFiController {
     @GetMapping("/address/getWiFiNear")
     public WiFi getWiFiNearFromAddress(@RequestParam String address) throws ServerException {
         return wiFiService.getPointNearFromAddress(address);
+    }
+
+    /**
+     * Данный метод возвращет все wifi точки
+     * @return список wifi точек
+     */
+    @CrossOrigin
+    @GetMapping("/getWiFiAll")
+    public List<WiFi> getWiFiAll(){
+        return wiFiService.getPoint();
     }
 }
