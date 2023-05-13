@@ -1,19 +1,11 @@
 ymaps.ready(init);
 
-function init() {    
+function init() {
     let map = new ymaps.Map('map', {
-        center: SPB_CENTER, // SPB_CENTER
+        center: SPB_CENTER,
         zoom: 12,
         controls: []
     }, {});
-
-    let location = ymaps.geolocation.get();
-
-    location.then(function(res) {
-        let locationText = res.getObjects.get(0).properties.get('text');
-        console.log(locationText)
-    })
-
 }
 
 const coordinatesForm = document.querySelector('#coordinates-form');
@@ -26,24 +18,21 @@ coordinatesForm.addEventListener('submit', formHandler);
 function formHandler(event) {
     event.preventDefault();
 
+    document.querySelector('#error').innerHTML = ''
+
     if (radio.checked) {
         if (checkboxAddress.checked) {
-            console.log('Радиус адрес')
             getAreaPointAddress()
         } else {
-            console.log('Радиус координаты')
             getAreaPoint();
         }
-        //
+
     } else {
         if (checkboxAddress.checked) {
-            console.log('ближайшая адрес')
             getClosestPointAddress()
         } else {
-            console.log('ближайшая координаты')
             getClosestPoint();
         }
-        //
     }
 }
 
@@ -55,11 +44,12 @@ async function getClosestPointAddress() {
 
     await fetch(`${SERVER_HOST}/address/getWiFiNear?address=${addressValue}`, {})
         .then(response => response.json())
-        .then(json => closestPoint = json);
+        .then(json => closestPoint = json)
 
-    console.log(closestPoint.coordinates);
+    console.log(closestPoint);
 
-    addPlacemarks([60, 30], [closestPoint]) //!!!!!!!!!!!!!!!
+    addPlacemarks(closestPoint.coordinates, closestPoint.wiFis)
+
 }
 
 async function getAreaPointAddress() {
@@ -73,13 +63,28 @@ async function getAreaPointAddress() {
 
     })
         .then(response => response.json())
-        .then(json => points = json)
+        .then(json => points = json);
 
-    // appendPoints(points)
+    if (points?.status === 500 ) {
+        appendError(points.message);
+        return
+    }
 
-    console.log(points)
+    if (points.wiFis.length === 0) {
+        appendError('Не найдено Wi-Fi точек в данном радиусе.')
+    }
 
-    addPlacemarks([60, 30], points) //!!!!!!!!!!!!!!!!!
+    addPlacemarks(points.coordinates, points.wiFis)
+}
+
+function appendError(info) {
+    const divError = document.querySelector('#error');
+    const error = `
+        <div class="alert alert-warning text-center" role="alert">
+            ${info}
+        </div>
+        `
+    divError.insertAdjacentHTML('beforeend', error)
 }
 
 async function getClosestPoint() {
@@ -115,23 +120,23 @@ async function getAreaPoint() {
     addPlacemarks([latitudeValue, longitudeValue], points)
 }
 
-function appendPoints(points) {
-    let list = document.createElement('ul');
+// function appendPoints(points) {
+//     let list = document.createElement('ul');
 
-    let div = document.querySelector('#points')
+//     let div = document.querySelector('#points')
 
-    div.innerHTML = ''
+//     div.innerHTML = ''
 
-    list.classList.add("mt-5");
+//     list.classList.add("mt-5");
 
-    for (let key in points) {
-        let li = document.createElement('li');
-        li.innerText = `№: ${points[key].number}\n Широта: ${points[key].coordinates[0]}\n Долгота: ${points[key].coordinates[1]}`
-        list.append(li)
-    }
+//     for (let key in points) {
+//         let li = document.createElement('li');
+//         li.innerText = `№: ${points[key].number}\n Широта: ${points[key].coordinates[0]}\n Долгота: ${points[key].coordinates[1]}`
+//         list.append(li)
+//     }
 
-    div.append(list)
-}
+//     div.append(list)
+// }
 
 function addPlacemarks(center, points) {
     let mapDiv = document.querySelector('#map');
@@ -175,13 +180,18 @@ function addPlacemarks(center, points) {
         });
 
         map.geoObjects.add(placemark);
+
+        map.setBounds(
+            map.geoObjects.getBounds(),
+            {
+                checkZoomRange: true,
+                zoomMargin: 9
+            }
+        );
     }
 }
 
 function buildRoute(latitudeB, longitudeB, latitudeA, longitudeA) {
-    console.log(latitudeA, longitudeA, latitudeB, longitudeB)
-    console.log(typeof(latitudeA), typeof(longitudeA), typeof(latitudeB), typeof(longitudeB))
-
     let pointA = [latitudeA, longitudeA]
     let pointB = [latitudeB, longitudeB]
 
@@ -215,12 +225,12 @@ const submitButton = document.querySelector('#submit-btn')
 radio.addEventListener('change', function () {
     if (this.checked) {
         radiusInput.disabled = false;
-        // radiusInput.value = '';
         submitButton.innerText = 'Найти все Wi-Fi точки в радиусе';
+        radiusInput.required = true;
     } else {
         radiusInput.disabled = true;
-        // radiusInput.value = '';
         submitButton.innerText = 'Найти ближашую Wi-Fi точку';
+        radiusInput.required = false;
     }
 });
 
@@ -229,12 +239,18 @@ const checkboxCoordinates = document.querySelector('#checkCoordinates')
 const divAdress = document.querySelector('#address')
 const divCoordinates = document.querySelector('#coordinates')
 
-checkboxCoordinates.addEventListener('change', function() {
+checkboxCoordinates.addEventListener('change', function () {
     divAdress.style.display = "none";
     divCoordinates.style.display = "";
+    latitudeInput.required = true;
+    longitudeInput.required = true;
+    document.querySelector('#address-input').required = false;
 })
 
-checkboxAddress.addEventListener('change', function() {
+checkboxAddress.addEventListener('change', function () {
     divCoordinates.style.display = "none";
     divAdress.style.display = "";
+    latitudeInput.required = false;
+    longitudeInput.required = false;
+    document.querySelector('#address-input').required = true;
 })
