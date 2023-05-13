@@ -70,7 +70,7 @@
                                         <label class="col-form-label">Адрес:</label>
                                     </div>
                                     <div class="col-auto">
-                                        <input type="text" id="address-input" class="form-control">
+                                        <input type="text" id="address-input" class="form-control" required>
                                     </div>
                                     <div class="col-auto">
                                         <span class="form-text">
@@ -78,7 +78,7 @@
                                         </span>
                                     </div>
                                 </div>
-                            </div>
+                            </div>                            
                             <div id="coordinates" style="display: none;" class="mt-4">
                                 <div class="row g-3 align-items-center">
                                     <div class="col-auto">
@@ -115,7 +115,7 @@
                                     <label class="form-check-label">
                                         Найти все точки в определенном радиусе
                                     </label>
-                                </div>
+                                </div>                                
                                 <div class="col-auto">
                                     <label class="col-form-label">Радиус:</label>
                                 </div>
@@ -128,9 +128,12 @@
                                         Введите радиус поиска в метрах.
                                     </span>
                                 </div>
+                                <div id="error">
+                                    
+                                </div>
                             </div>
                             <div class="d-flex justify-content-center">
-                                <button type="submit" class="btn btn-primary mt-4" id="submit-btn">
+                                <button type="submit" class="btn btn-primary mt-2" id="submit-btn">
                                     Найти ближайшую Wi-Fi точку
                                 </button>
                             </div>
