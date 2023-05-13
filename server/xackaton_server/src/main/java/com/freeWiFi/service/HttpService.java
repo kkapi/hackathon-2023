@@ -3,10 +3,7 @@ package com.freeWiFi.service;
 import com.freeWiFi.domain.ApiGeocode;
 import com.freeWiFi.domain.ApiWiFi;
 import com.freeWiFi.domain.Coordinates;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 

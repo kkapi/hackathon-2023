@@ -71,7 +71,7 @@ public class WiFiController {
     public WiFiSending getWiFiNearFromAddress(@RequestParam String address) throws ServerException {
         return wiFiService.getPointNearFromAddress(address);
     }
-
+    
     /**
      * Данный метод возвращет все wifi точки
      * @return список wifi точек
