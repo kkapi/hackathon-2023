@@ -99,4 +99,16 @@ public class WiFiService {
         }
         return getPointNear(coordinates[1], coordinates[0]);
     }
+
+    /**
+     * Данный метод возвращет все wifi точки
+     * @return список wifi точек
+     */
+    public List<WiFi> getPoint() {
+        List<WiFi> wiFiList = wiFiRepo.findAll();
+        for (WiFi wiFi : wiFiList) {
+            wiFi.inArray();
+        }
+        return wiFiList;
+    }
 }

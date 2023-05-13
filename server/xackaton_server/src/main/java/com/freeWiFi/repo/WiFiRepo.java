@@ -14,25 +14,31 @@ import java.util.List;
 public interface WiFiRepo extends JpaRepository<WiFi, Long> {
     /**
      * Данный метод ищет в базе данных точки в определенном радиусе от заданных координат
-     * @param lo - долгота
-     * @param la - широта
+     * @param longitude - долгота
+     * @param latitude - широта
      * @param radius - радиус
      * @return набор wifi точек
      */
     @Query(value = "SELECT t " +
             "FROM WiFi t " +
-            "WHERE sqrt(((t.lat - :la)*111153)*((t.lat - :la)*111153) + ((t.lon - :lo)*62555)*((t.lon - :lo)*62555)) < :radius " +
-            "order by sqrt(((t.lat - :la)*111153)*((t.lat - :la)*111153) + ((t.lon - :lo)*62555)*((t.lon - :lo)*62555))")
-    List<WiFi> findNeedPoint(@Param("lo") double lo, @Param("la") double la, @Param("radius") double radius);
+            "WHERE sqrt(((t.lat - :latitude)*111153)*((t.lat - :latitude)*111153) + ((t.lon - :longitude)*62555)*((t.lon - :longitude)*62555)) < :radius " +
+            "order by sqrt(((t.lat - :latitude)*111153)*((t.lat - :latitude)*111153) + ((t.lon - :longitude)*62555)*((t.lon - :longitude)*62555))")
+    List<WiFi> findNeedPoint(@Param("longitude") double longitude, @Param("latitude") double latitude, @Param("radius") double radius);
 
     /**
-     * Данный метод ищет ближайшую wifi точку к заданным координатам в базе данных
-     * @param lo - долгота
-     * @param la - широта
+     * Данный метод выводит все wifi точки сортируя их по удалению от указанных координат
+     * @param longitude - долгота
+     * @param latitude - широта
      * @return - wifi точка
      */
     @Query(value = "SELECT t " +
             "FROM WiFi t " +
-            "order by sqrt(((t.lat - :la)*111153)*((t.lat - :la)*111153) + ((t.lon - :lo)*62555)*((t.lon - :lo)*62555))")
-    List<WiFi> findFirstNeedPoint(@Param("lo") double lo, @Param("la") double la);
+            "order by sqrt(((t.lat - :latitude)*111153)*((t.lat - :latitude)*111153) + ((t.lon - :longitude)*62555)*((t.lon - :longitude)*62555))")
+    List<WiFi> findFirstNeedPoint(@Param("longitude") double longitude, @Param("latitude") double latitude);
+
+    /**
+     * Данный метод возвращает все wifi точки в базе данных
+     * @return все wifi точки
+     */
+    List<WiFi> findAll();
 }
