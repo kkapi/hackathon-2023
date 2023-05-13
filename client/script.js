@@ -46,9 +46,12 @@ async function getClosestPointAddress() {
         .then(response => response.json())
         .then(json => closestPoint = json)
 
-    console.log(closestPoint);
-
-    addPlacemarks(closestPoint.coordinates, closestPoint.wiFis)
+    if (closestPoint?.status === 500) {
+        appendError(closestPoint.message);
+        return
+    } else {
+        addPlacemarks(closestPoint.coordinates, closestPoint.wiFis)
+    }
 
 }
 
@@ -65,7 +68,7 @@ async function getAreaPointAddress() {
         .then(response => response.json())
         .then(json => points = json);
 
-    if (points?.status === 500 ) {
+    if (points?.status === 500) {
         appendError(points.message);
         return
     }
@@ -117,6 +120,10 @@ async function getAreaPoint() {
 
     // appendPoints(points)
 
+    if (points.length === 0) {
+        appendError('Не найдено Wi-Fi точек в данном радиусе.')
+    }
+
     addPlacemarks([latitudeValue, longitudeValue], points)
 }
 
@@ -152,7 +159,8 @@ function addPlacemarks(center, points) {
         balloonContentHeader: 'Вы находитесь здесь.'
     }, {
         iconLayout: 'default#image',
-        iconImageHref: 'https://cdn-icons-png.flaticon.com/512/762/762041.png',
+        // iconImageHref: 'https://cdn-icons-png.flaticon.com/512/762/762041.png',
+        iconImageHref: 'https://cdn-icons-png.flaticon.com/512/1632/1632646.png',
         iconImageSize: [30, 30],
         iconImageOffset: [-15, -15]
     });
@@ -162,19 +170,20 @@ function addPlacemarks(center, points) {
     for (let point in points) {
         let placemark = new ymaps.Placemark(points[point].coordinates, {
             balloonContentHeader: `${points[point].name_wifi}`,
-            balloonContentBody: `Адрес: ${points[point].address}, 
-                                Район: ${points[point].district}, 
-                                Покрытие: ${points[point].coverage}м, 
-                                Статус: ${points[point].status}`,
-            balloonContentFooter: `<button onclick="buildRoute(${points[point].coordinates[0]},
+            balloonContentBody: `<b>Адрес:</b> ${points[point].address},<br> 
+                                <b>Район:</b> ${points[point].district},<br>
+                                <b>Покрытие:</b> ${points[point].coverage}м,<br> 
+                                <b>Статус:</b> ${points[point].status}`,
+            balloonContentFooter: `<button class="btn btn-primary" onclick="buildRoute(${points[point].coordinates[0]},
                                     ${points[point].coordinates[1]},
                                     ${center[0]},
                                     ${center[1]})">
-                                    Построить маршрут до точки
+                                    Построить маршрут
                                 </button>`
         }, {
             iconLayout: 'default#image',
-            iconImageHref: 'https://cdn-icons-png.flaticon.com/512/3898/3898607.png',
+            // iconImageHref: 'https://cdn-icons-png.flaticon.com/512/3898/3898607.png',
+            iconImageHref: 'https://cdn-icons-png.flaticon.com/512/1589/1589718.png',
             iconImageSize: [30, 30],
             iconImageOffset: [-15, -15]
         });
