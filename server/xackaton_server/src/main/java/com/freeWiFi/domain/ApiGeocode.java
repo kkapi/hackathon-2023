@@ -9,12 +9,16 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 public class ApiGeocode {
     @JsonSetter("ID")
     private int id;
+
     @JsonSetter("Building_ID")
     private int buildingId;
+
     @JsonSetter("Name")
     private String name;
+
     @JsonSetter("Longitude")
     private double longitude;
+
     @JsonSetter("Latitude")
     private double latitude;
 

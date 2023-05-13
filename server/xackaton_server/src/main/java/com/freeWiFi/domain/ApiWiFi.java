@@ -46,4 +46,6 @@ public class ApiWiFi {
     public void setResults(WiFi[] results) {
         this.results = results;
     }
+
+
 }
