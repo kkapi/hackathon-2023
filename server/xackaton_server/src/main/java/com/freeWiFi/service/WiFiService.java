@@ -84,7 +84,7 @@ public class WiFiService {
         if((coordinates[0] == 0) && (coordinates[1] == 0)){
             coordinates = httpService.ApiGeoCodeJustAbout(address);
             if(coordinates == null) {
-                throw new ServerException("Адресс не найден");
+                throw new ServerException("Адрес не найден");
             }
         }
         return coordinates;
