@@ -1,11 +1,19 @@
 ymaps.ready(init);
 
-function init() {
+function init() {    
     let map = new ymaps.Map('map', {
         center: SPB_CENTER, // SPB_CENTER
         zoom: 12,
         controls: []
     }, {});
+
+    let location = ymaps.geolocation.get();
+
+    location.then(function(res) {
+        let locationText = res.getObjects.get(0).properties.get('text');
+        console.log(locationText)
+    })
+
 }
 
 const coordinatesForm = document.querySelector('#coordinates-form');
@@ -19,10 +27,59 @@ function formHandler(event) {
     event.preventDefault();
 
     if (radio.checked) {
-        getAreaPoint();
+        if (checkboxAddress.checked) {
+            console.log('Радиус адрес')
+            getAreaPointAddress()
+        } else {
+            console.log('Радиус координаты')
+            getAreaPoint();
+        }
+        //
     } else {
-        getClosestPoint();
+        if (checkboxAddress.checked) {
+            console.log('ближайшая адрес')
+            getClosestPointAddress()
+        } else {
+            console.log('ближайшая координаты')
+            getClosestPoint();
+        }
+        //
     }
+}
+
+async function getClosestPointAddress() {
+    const addressInput = document.querySelector('#address-input')
+    const addressValue = addressInput.value;
+
+    let closestPoint;
+
+    await fetch(`${SERVER_HOST}/address/getWiFiNear?address=${addressValue}`, {})
+        .then(response => response.json())
+        .then(json => closestPoint = json);
+
+    console.log(closestPoint.coordinates);
+
+    addPlacemarks([60, 30], [closestPoint]) //!!!!!!!!!!!!!!!
+}
+
+async function getAreaPointAddress() {
+    const addressInput = document.querySelector('#address-input')
+    const addressValue = addressInput.value;
+    const radiusValue = Number(radiusInput.value);
+
+    let points;
+
+    await fetch(`${SERVER_HOST}/address/getWiFi?address=${addressValue}&radius=${radiusValue}`, {
+
+    })
+        .then(response => response.json())
+        .then(json => points = json)
+
+    // appendPoints(points)
+
+    console.log(points)
+
+    addPlacemarks([60, 30], points) //!!!!!!!!!!!!!!!!!
 }
 
 async function getClosestPoint() {
@@ -166,3 +223,18 @@ radio.addEventListener('change', function () {
         submitButton.innerText = 'Найти ближашую Wi-Fi точку';
     }
 });
+
+const checkboxAddress = document.querySelector('#checkAddress')
+const checkboxCoordinates = document.querySelector('#checkCoordinates')
+const divAdress = document.querySelector('#address')
+const divCoordinates = document.querySelector('#coordinates')
+
+checkboxCoordinates.addEventListener('change', function() {
+    divAdress.style.display = "none";
+    divCoordinates.style.display = "";
+})
+
+checkboxAddress.addEventListener('change', function() {
+    divCoordinates.style.display = "none";
+    divAdress.style.display = "";
+})
