@@ -1,4 +1,7 @@
-# hackaton
-Хакатон "Кодовые волки"
+# [Чемпионат цифровой трансформации для студентов СПбГЭТУ «ЛЭТИ»](https://vk.com/digitalstudents)
 
-[GitHub | Free Wi-Fi SPb](https://github.com/kkapi/hackaton)
+![diploma](/assets/images/diploma_hackathon.jpg)
+
+![sreenshot](/assets/images/screenshot.png)
+
+
